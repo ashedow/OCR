@@ -35,9 +35,22 @@ def multiply_mv(mat, vec):
   return result
 
 
+def hadamard(a, b):
+  if (len(a) != len(b)):
+    raise ValueError("Cannot hadamard product two vectors of the different length")
+  result = list()
+  for i in range(0, len(a)):
+    result.append(a[i] * b[i])
+  return result
+
+
 def sigmoid(x):
   return 1.0/(1.0 + pow(math.e, -x))
 
+
+'''
+print hadamard([1, 2, 3], [3, 2, 1])
+'''
 
 '''
 print str(sigmoid(0))
