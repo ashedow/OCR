@@ -35,16 +35,13 @@ def create_layer(number_of_neurons, number_of_inputs, init_bias_func, init_weigh
       layer["weights"].append(init_weight_func(i, j))
   return layer
 
-
-# num_inputs is number of intputs for every neuron
-# TODO: A real network can have different number of neurons in every layer
-def create_neural_network(num_inputs, num_hidden_layers, num_neurons_in_hidden_layers, num_output_neurons):
+# neurons is a list of natural numbers representing number of neurons at every layer
+# neurons[0] is the number of inputs to neural network (i.e. length of the data example)
+def create_neural_network(neurons):
   nn = list()
-  for i in range(0, num_hidden_layers):
-    nn.append(create_layer(num_neurons_in_hidden_layers, num_inputs, init_bias_rand, init_weight_rand))
-  nn.append(create_layer(num_output_neurons, num_inputs, init_bias_rand, init_weight_rand))
+  for i in range(1, len(neurons)):
+    nn.append(create_layer(neurons[i], neurons[i-1], init_bias_rand, init_weight_rand))
   return nn
-
 
 '''
 import dump

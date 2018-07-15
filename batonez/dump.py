@@ -30,11 +30,14 @@ def print_layer(layer, layer_index=None, input_vec=None, activation_vec=None):
     print("-----------", end="")
   print("")
 
-  numRows = len(input_vec) if input_vec else nNeurons
+  inputVecLen = len(input_vec) if input_vec else 0
+  numRows = inputVecLen if  (inputVecLen > nNeurons) else nNeurons
 
   for i in range(0, numRows):
-    if input_vec:
+    if i < inputVecLen:
       print("{: >+3.3f}  *  ".format(input_vec[i]), end="")
+    else:
+      print("        *  ", end="")
     if i < nNeurons:
       for j in range(0, nInputs):
         print("{: >+3.3f}".format(layer["weights"][j + i * nInputs]) + "  ", end="")
