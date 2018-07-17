@@ -1,5 +1,12 @@
 from __future__ import print_function
 
+def print_mat(mat, num_cols):
+  for i in range(0, len(mat)):
+    print("{: >+3.3f}  ".format(mat[i]), end="")
+    if i > 0 and (i+1) % num_cols == 0:
+      print("")
+  
+
 def print_layer(layer, layer_index=None, input_vec=None, activation_vec=None):
   nNeurons = len(layer["biases"])
   nInputs = len(layer["weights"]) / len(layer["biases"])
@@ -53,3 +60,7 @@ def print_neural_network(nn):
   for i in range(0, len(nn)):
     print_layer(nn[i], i) 
 
+'''
+mat = [1,2,3,4,5,6,7,8,9]
+print_mat(mat, 3)
+'''
