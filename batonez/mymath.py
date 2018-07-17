@@ -9,6 +9,22 @@ def vec_sum(a, b):
   return result
 
 
+def transpose_in_place(mat, num_rows, num_cols):
+  if len(mat) / num_rows != num_cols:
+    raise ValueError("transpose: matrix dimensions do not match the input array length")
+  for i in range(0, num_rows):
+    for j in range(0, i):
+      temp = mat[num_cols*i + j]
+      mat[num_cols*i + j] = mat[num_cols*j + i]
+      mat[num_cols*j + i] = temp
+  return mat
+
+
+def transpose(mat, num_rows, num_cols):
+  result = list(mat)
+  return transpose_in_place(result, num_rows, num_cols)
+
+
 def dot(a, b, length = 0, aFrom = 0, bFrom = 0):
   if length <= 0:
     length = min(len(a), len(b))
@@ -66,4 +82,12 @@ print dot(one,two, 3, 3, 1)
 mat = [1,2,-3, 2,2,2, 3,3,-1]
 vec = [1,2,3]
 print multiply_mv(mat, vec)
+'''
+
+'''
+import dump
+mat = [1,2,3,4,5,6,7,8,9]
+dump.print_mat(transpose(mat, 3, 3), 3)
+print("----")
+dump.print_mat(mat, 3)
 '''
