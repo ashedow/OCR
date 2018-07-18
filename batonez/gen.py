@@ -10,7 +10,7 @@ def init_weight_const(neuron_num, input_num):
   return 1.0
 
 def init_weight_rand(neuron_num, input_num):
-  return random.uniform(-1.0, 1.0)
+  return random.uniform(-0.2, 0.2)
 
 def init_weight_identity(neuron_num, input_num):
   return 1.0 if neuron_num == input_num else 0.0
@@ -40,7 +40,7 @@ def create_layer(number_of_neurons, number_of_inputs, init_bias_func, init_weigh
 def create_neural_network(neurons):
   nn = list()
   for i in range(1, len(neurons)):
-    nn.append(create_layer(neurons[i], neurons[i-1], init_bias_rand, init_weight_rand))
+    nn.append(create_layer(neurons[i], neurons[i-1], init_bias_const, init_weight_rand))
   return nn
 
 '''
