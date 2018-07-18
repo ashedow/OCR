@@ -5,7 +5,20 @@ def print_mat(mat, num_cols):
     print("{: >+3.3f}  ".format(mat[i]), end="")
     if i > 0 and (i+1) % num_cols == 0:
       print("")
-  
+
+
+def print_vectors(vectors):
+  j = 0
+  done = False
+  while not done:
+    done = True
+    for i in range(0, len(vectors)):
+      if j < len(vectors[i]):
+        print("{: >+3.3f}   ".format(vectors[i][j]), end="")
+        done = False
+    print("")
+    j = j + 1
+
 
 def print_layer(layer, layer_index=None, input_vec=None, activation_vec=None):
   nNeurons = len(layer["biases"])
