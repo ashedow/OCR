@@ -73,6 +73,12 @@ def sigmoid(x):
   return 1.0/(1.0 + pow(math.e, -x))
 
 
+def vectorized_func(vec_in, func):
+  result = list()
+  for i in range(0, len(vec_in)):
+    result.append(func(vec_in[i]))
+  return result
+
 '''
 print hadamard([1, 2, 3], [3, 2, 1])
 '''
