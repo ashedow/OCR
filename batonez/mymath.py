@@ -9,6 +9,15 @@ def vec_sum(a, b):
   return result
 
 
+def vec_subtract(a, b):
+  if len(a) != len(b):
+    raise ValueError("Cannot sum two vectors of the different length")
+  result = list()
+  for i in range(0, len(a)):
+    result.append(a[i] - b[i])
+  return result
+
+
 def transpose_in_place(mat, num_rows, num_cols):
   if len(mat) / num_rows != num_cols:
     raise ValueError("transpose: matrix dimensions do not match the input array length")
