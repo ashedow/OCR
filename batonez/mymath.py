@@ -77,6 +77,9 @@ def hadamard(a, b):
 def sigmoid(x):
   return 1.0/(1.0 + pow(math.e, -x))
 
+def sigmoid_derivative(x):
+  return sigmoid(x) * (1 - sigmoid(x))
+
 
 def vectorized_func(vec_in, func):
   result = list()
