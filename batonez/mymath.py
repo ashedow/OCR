@@ -18,6 +18,11 @@ def vec_subtract(a, b):
   return result
 
 
+def multiply_vs_in_place(vec, scalar):
+  for i in range(0, len(vec)):
+    vec[i] *= scalar
+
+
 def transpose_in_place(mat, num_rows, num_cols):
   if len(mat) / num_rows != num_cols:
     raise ValueError("transpose: matrix dimensions do not match the input array length")
@@ -77,6 +82,14 @@ def vectorized_func(vec_in, func):
   result = list()
   for i in range(0, len(vec_in)):
     result.append(func(vec_in[i]))
+  return result
+
+def vectorized_func2(vec1_in, vec2_in, func):
+  if len(vec1_in) != len(vec2_in):
+    raise ValueError("Cannot vectorize2 func: arguments are different size")
+  result = list()
+  for i in range(0, len(vec1_in)):
+    result.append(func(vec1_in[i], vec2_in[i]))
   return result
 
 '''
