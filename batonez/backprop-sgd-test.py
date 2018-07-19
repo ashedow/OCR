@@ -40,10 +40,15 @@ def propagate_back(nn, partial_errors, layer_num_from_the_back):
 nn = gen.create_neural_network([4, 10, 2])
 
 learningRate = 0.2
-trainingExample = [0.9, 0.8, 0.1, 0.1] 
-desired = [0.99, 0.01]
 
 for something in range(0, 1000): # <- loop over training examples
+  if something % 2:
+    trainingExample = [0.9, 0.8, 0.1, 0.1]
+    desired = [0.99, 0.01]
+  else:
+    trainingExample = [0.1, 0.1, 0.8, 0.9]
+    desired = [0.01, 0.99]
+
   result = neural.feedforward(trainingExample, nn, mymath.sigmoid, True)
   partial_errors = mymath.vectorized_func2(result["activations"][-1], desired, output_neuron_error)
 
@@ -76,5 +81,9 @@ for something in range(0, 1000): # <- loop over training examples
     
     partial_errors = propagate_back(nn, partial_errors, i) # <- backprop, prepare for the next loop iteration
 
-print("\n====\nAFTER LEARNED:=====\n")
+print("\n====\nAFTER LEARNED 1:=====\n")
+trainingExample = [0.9, 0.8, 0.1, 0.1]
+result = neural.feedforward(trainingExample, nn, mymath.sigmoid, True)
+print("\n====\nAFTER LEARNED 2:=====\n")
+trainingExample = [0.1, 0.1, 0.8, 0.9]
 result = neural.feedforward(trainingExample, nn, mymath.sigmoid, True)
