@@ -1,4 +1,4 @@
-from __future__ import print_function
+import idx
 import struct
 
 bmpHeader = [ 0x42, 0x4d, 0x46, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x36, 0x04, 0x00, 0x00, 0x28, 0x00,
@@ -70,54 +70,30 @@ bmpHeader = [ 0x42, 0x4d, 0x46, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x36, 
 0x00, 0xff, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00,
 0x00, 0xff, 0x00, 0x00, 0x00, 0xff ]
 
-numberOfItemsToRead = 50
 
-def flipVertically(image, rows, cols):
+def flipImageVertically(image, rows, cols):
   result = []
   for i in range(0, rows):
     for j in range(0, cols):
       result.append(image[(rows-i-1)*rows + j])
   return tuple(result)
 
-with open("mnist/train-images-idx3-ubyte", "rb") as source:
-  meta = struct.unpack('>4i', source.read(16))
-  magicNumber = meta[0]
-  numberOfItems = meta[1]
-  rows = meta[2]
-  cols = meta[3]
-  imageSize = rows*cols
 
-  print("Images: {}".format(numberOfItems))
-  print("Image size: {} x {} = {}px".format(rows, cols, imageSize))
-  print("Extracting...")
+def save_example(example_data, rows, example_label, path):
+  cols = len(example_data) / rows
+  flippedImage = flipImageVertically(example_data, rows, cols)
+  with open(path + ".bmp", "wb") as dest:
+    writeHeaderFmt = '=' + str(len(bmpHeader)) + 'B'
+    writePixelsFmt = '=' + str(len(example_data)) + 'B'
+    dest.write(struct.pack(writeHeaderFmt, *bmpHeader))
+    dest.write(struct.pack(writePixelsFmt, *flippedImage))
+  with open(path + ".txt", "w") as dest:
+    dest.write(str(example_label))
 
-  structFmtStr = '>' + str(imageSize) + 'B'
+numberOfExamplesToExtract = 50
+examples = idx.read_examples('mnist/train-images-idx3-ubyte', numberOfExamplesToExtract)
+labels = idx.read_labels('mnist/train-labels-idx1-ubyte', numberOfExamplesToExtract)
 
-  for i in range(0, numberOfItemsToRead):
-    if i >= numberOfItems:
-      break
-  
-    image = struct.unpack(structFmtStr, source.read(imageSize))
-    image = flipVertically(image, rows, cols)
-
-    with open("extracted/{}.bmp".format(i), "wb") as dest:
-      writeHeaderFmt = '=' + str(len(bmpHeader)) + 'B'
-      writePixelsFmt = '=' + str(len(image)) + 'B'
-      dest.write(struct.pack(writeHeaderFmt, *bmpHeader))
-      dest.write(struct.pack(writePixelsFmt, *image))
-
-  print("Extracted {} images!".format(i+1))
-
-with open("mnist/train-labels-idx1-ubyte", "rb") as source:
-  meta = struct.unpack('>2i', source.read(8))
-  magicNumber = meta[0]
-  numberOfItems = meta[1]
-
-  for i in range(0, numberOfItemsToRead):
-    if i >= numberOfItems:
-      break
-    label = struct.unpack('>B', source.read(1))
-    with open("extracted/{}.txt".format(i), "w") as dest:
-      dest.write(str(label[0]))
-  print("Extracted {} labels!".format(i+1))
+for i in range(0, numberOfExamplesToExtract):
+  save_example(examples[i], 28, labels[i], 'extracted/{}'.format(i))
 
